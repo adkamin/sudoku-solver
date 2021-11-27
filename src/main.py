@@ -11,11 +11,6 @@ def main():
     print("Initial sukodu: ")
     print(sudoku)
 
-    subs = sudoku.get_subsquare(3,3)
-    for sub in subs:
-        print(sub.value)
-
-
     steps = 0
     solver = Solver(sudoku)
     if solver.solve() and solver.is_solution():

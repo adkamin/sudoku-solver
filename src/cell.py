@@ -11,15 +11,22 @@ class Cell:
         return len(self.domain) < len(other.domain)
 
 
-
     def remove_from_domain(self, n):
         """ Removes the given value from the domain, and possibly assigns the last value to the cell """
         self.domain = self.domain.remove(n)
         # TODO should this be done here?
-        if len(self.domain) == 1:
-            self.value = self.domain[0]
+        # if len(self.domain) == 1:
+        #     self.value = self.domain[0]
     
 
     def update_neighbors(self, neighbors):
-        """ Updates the neighbors of cell """
+        """ Updates neighbors """
         self.neighbors = neighbors
+
+
+    def get_other_neighbors(self, other):
+        """ Returns neighbors excluding the neighbor 'other' """
+        orig_neighbors = self.neighbors
+        if (orig_neighbors):
+            orig_neighbors.remove(other)
+        return orig_neighbors
