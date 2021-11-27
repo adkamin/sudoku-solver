@@ -1,7 +1,3 @@
-""" Author:  Andrea Minichova (s1021688) 
-    Project: Sudoku solver using AC-3 algorithm """
-
-
 import itertools
 import math
 
@@ -37,26 +33,26 @@ class Sudoku:
     
     def generate_neighbors(self, row, col):
         """ Returns all neighbors of a cell (which constrain it) """
-        vertical, horizontal, subsquare, neighbors = [], [], [], []
+        neighbors = set()
         for i in range(9):
-            for j in range(9):
-                if row != i or col != j:
-                    vertical.append(self.grid[row][i])
-                    horizontal.append(self.grid[j][col])
-                subsquare = self.get_subsquare(row, col)
-        neighbors = list(set(vertical + horizontal + subsquare))
-        return neighbors
+            if i != row:
+                neighbors.add(self.grid[col][i])
+        for j in range(9):
+            if j != col:
+                neighbors.add(self.grid[j][row])
+        neighbors.update(self.get_subsquare(row, col))
+        return list(neighbors)
 
 
     def get_subsquare(self, row, col):
         """ Returns all neighbors inside the same subsquare """
-        subsquare = []
+        subsquare = set()
         square_row = math.floor(row/3) * 3
         square_col = math.floor(col/3) * 3
         for i in range(square_row, square_row+3):
             for j in range(square_col, square_col+3):
-                if square_row != row or square_col != col:
-                    subsquare.append(self.grid[i][j])
+                if i != row or j != col:
+                    subsquare.add(self.grid[j][i])
         return subsquare
 
 
@@ -89,7 +85,6 @@ class Sudoku:
         for square in self.subsquares:
             if sum(cell.value for cell in square) != 45:
                 return False
-        print("Solved!")
         return True
 
 
