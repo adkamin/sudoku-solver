@@ -1,42 +1,42 @@
 from sudoku import Sudoku
-from queue import PriorityQueue
+import heapq
 
 class Solver:
     def __init__(self, sudoku):
         self.sudoku = sudoku
-        self.queue = self.generate_arcs()  # Priority queue of arcs (pairs of cells)
+        self.q = self.generate_arcs()  # Priority queue of arcs (pairs of cells)
 
 
     def generate_arcs(self):
         """ Initializes the priority queue to contain all possible arcs """
-        q = PriorityQueue()
+        q = []
         for i in range(9):
             for j in range(9):
                 for neighbor in self.sudoku.grid[i][j].neighbors:
-                    arc = (self.sudoku.grid[i][j], neighbor)
-                    # print(f"arc {i} {j} : {arc[0].value}, {arc[1].value}.")
-                    q.put(arc)
+                    # Only generate arcs where at least one cell does not have set value
+                    if self.sudoku.grid[i][j] != 0 or neighbor.value != 0: 
+                        arc = (self.sudoku.grid[i][j], neighbor)
+                    q.append(arc)
+        heapq.heapify(q)
         return q
 
 
     def solve(self):
         """ AC-3 algorithm """
         """ Returns true if constraints can be satisfied, returns false otherwise"""
-        counter = 0
-        while not self.queue.empty():
-            print(f"iteration nr {counter}")
-            counter+=1
-            (c1,c2) = self.queue.get()
-            orig_domain = c1.domain
-            self.revise((c1,c2))
-            if c1.domain == 0:
-                return False
-            if c1.domain != orig_domain:
-                print(type(c1))
-                for neighbor in c1.get_other_neighbors(c2):
-                    if not any((neighbor, c1) in arc for arc in self.queue.queue):
-                    # if (neighbor, c1) not in self.queue:
-                        self.queue.put((neighbor, c1))
+        # counter = 0
+        while self.q:
+            # print(f"iteration nr {counter}")
+            # counter+=1
+            arc = heapq.heappop(self.q)
+            # print(f"Length of domain of c1: {len(arc[0].domain)} and of c2: {len(arc[1].domain)}" )
+            # print(f"c1 is: {arc[0].value} and c2 is {arc[1].value}" )
+            if self.revise(arc):
+                if arc[0].domain == 0:
+                    return False
+                for neighbor in arc[0].get_other_neighbors(arc[1]):
+                    if (neighbor, arc[0]) not in self.q:
+                        heapq.heappush(self.q, (neighbor, arc[0]))
         return True
 
         # while q not empty
@@ -51,13 +51,13 @@ class Solver:
         # return true
 
     def revise(self, arc):
-        (c1,c2) = arc
-        if (c1.domain):
-            for value in c1.domain:
-                if c2.domain:
-                    if value in c2.domain:
-                        c1.remove_from_domain(value)
-                        return
+        """ Returns true if domain of arc[0] is revised, returns false otherwise """
+        revised = False
+        for value in arc[0].domain:
+            if value in arc[1].domain:
+                arc[0].remove_from_domain(value)
+                revised = True
+        return revised
 
 
         
