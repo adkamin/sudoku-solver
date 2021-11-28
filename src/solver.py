@@ -30,6 +30,7 @@ class Solver:
             counter += 1
             arc = self.q.popleft()
             print(f"currently working on arc with values: {arc[0].value} {arc[1].value}")
+            print(f"with ids {arc[0].id} {arc[1].id}")
             if self.revise(arc):
                 if not arc[0].domain:
                     return False
