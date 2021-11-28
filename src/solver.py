@@ -3,7 +3,8 @@ import heapq
 
 class Solver:
     def __init__(self, sudoku):
-        self.sudoku = sudoku
+        """ Solver initializer """
+        self.sudoku = sudoku           # Sudoku to solve
         self.q = self.generate_arcs()  # Priority queue of arcs (pairs of cells)
 
 

@@ -10,9 +10,9 @@ class Sudoku:
         self.grid = self.read_sudoku(filename)
         self.subsquares = []
         self.init_neighbors()
+        print("Initial sudoku:")
+        print(self)
         self.init_domains()
-        # for neigh in self.grid[4][4].neighbors:
-        #     print(f"neighbor: {neigh.value}")
     
 
     def read_sudoku(self, filename):
@@ -43,13 +43,14 @@ class Sudoku:
                     self.grid[i][j].domain = [self.grid[i][j].value]
                 # Case value is not set, generate domain based on neighbor values
                 else:
-                    for val in self.grid[i][j].domain:
+                    orig_domain = list.copy(self.grid[i][j].domain)
+                    for val in orig_domain:
                         for neighbor in self.grid[i][j].neighbors:
-                            if i == 4 and j == 4:
-                                print(neighbor.value)
-                                print(f"value = {self.grid[i][j].value}")
                             if val == neighbor.value:
                                 self.grid[i][j].remove_from_domain(val)
+                                break
+                            else:
+                                continue
 
 
     def generate_neighbors(self, row, col):
@@ -61,12 +62,12 @@ class Sudoku:
         for j in range(9):
             if j != col:
                 neighbors[(j,row)] = self.grid[j][row]
-        self.get_subsquare(row, col, neighbors)
+        self.get_square_neighbors(row, col, neighbors)
         # print(f"nr of neighbors after subsquares: {len(list(set(neighbors)))}")
         return list(neighbors.values())
 
 
-    def get_subsquare(self, row, col, neighbors):
+    def get_square_neighbors(self, row, col, neighbors):
         """ Returns all neighbors inside the same subsquare """
         square_row = math.floor(row/3) * 3
         square_col = math.floor(col/3) * 3

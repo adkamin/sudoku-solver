@@ -3,18 +3,22 @@
 
 from sudoku import Sudoku
 from solver import Solver
-import heapq
+
 
 def main():
     nr = input("Specify sudoku file (1,2,3,4 or 5): ")
     filename = "Sudoku" + nr + ".txt"
     sudoku = Sudoku(filename)
-    print("Initial sukodu: ")
-    print(sudoku)
 
-    print(f"Domain of (4,4): ")
-    for val in sudoku.grid[4][4].domain:
-        print(val)
+    # # Testing domain
+    # print(f"Domain of (0,0): ")
+    # for val in sudoku.grid[0][0].domain:
+    #     print(val)
+
+    # # Testing neighbors
+    # print(f"Neighbors of (0,0): ")
+    # for neigh in sudoku.grid[0][0].neighbors:
+    #     print(neigh.value)
 
     steps = 0
     solver = Solver(sudoku)
@@ -22,9 +26,8 @@ def main():
         print(f"Solved sudoku in {steps} steps!")
     else:
         print("Could not solve sudoku")
+        print(sudoku)
 
-    
-     
 
     
 if __name__ == "__main__":

@@ -12,6 +12,7 @@ class Cell:
 
     
     def __eq__(self, other):
+        """ Operator == to state that cells are equal if they are the same object """
         return self is other
 
 
