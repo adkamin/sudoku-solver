@@ -10,6 +10,9 @@ class Sudoku:
         self.grid = self.read_sudoku(filename)
         self.subsquares = []
         self.init_neighbors()
+        self.init_domains()
+        # for neigh in self.grid[4][4].neighbors:
+        #     print(f"neighbor: {neigh.value}")
     
 
     def read_sudoku(self, filename):
@@ -31,29 +34,46 @@ class Sudoku:
                 self.grid[i][j].update_neighbors(self.generate_neighbors(i,j))
 
     
+    def init_domains(self):
+        """ Initializes domains of all cells """
+        for i in range(9):
+            for j in range(9):
+                # Case value is set, domain is that value
+                if self.grid[i][j].value != 0:
+                    self.grid[i][j].domain = [self.grid[i][j].value]
+                # Case value is not set, generate domain based on neighbor values
+                else:
+                    for val in self.grid[i][j].domain:
+                        for neighbor in self.grid[i][j].neighbors:
+                            if i == 4 and j == 4:
+                                print(neighbor.value)
+                                print(f"value = {self.grid[i][j].value}")
+                            if val == neighbor.value:
+                                self.grid[i][j].remove_from_domain(val)
+
+
     def generate_neighbors(self, row, col):
         """ Returns all neighbors of a cell (which constrain it) """
-        neighbors = set()
+        neighbors = {}
         for i in range(9):
             if i != row:
-                neighbors.add(self.grid[col][i])
+                neighbors[(col,i)] = self.grid[col][i]
         for j in range(9):
             if j != col:
-                neighbors.add(self.grid[j][row])
-        neighbors.update(self.get_subsquare(row, col))
-        return list(neighbors)
+                neighbors[(j,row)] = self.grid[j][row]
+        self.get_subsquare(row, col, neighbors)
+        # print(f"nr of neighbors after subsquares: {len(list(set(neighbors)))}")
+        return list(neighbors.values())
 
 
-    def get_subsquare(self, row, col):
+    def get_subsquare(self, row, col, neighbors):
         """ Returns all neighbors inside the same subsquare """
-        subsquare = set()
         square_row = math.floor(row/3) * 3
         square_col = math.floor(col/3) * 3
         for i in range(square_row, square_row+3):
             for j in range(square_col, square_col+3):
-                if i != row or j != col:
-                    subsquare.add(self.grid[j][i])
-        return subsquare
+                if (i != row or j != col):
+                    neighbors[(j,i)] = self.grid[j][i]
 
 
     def __str__(self):
@@ -103,7 +123,7 @@ class Sudoku:
     #     for i in range(9):
     #         if self.grid[row][i] == n or self.grid[i][col] == n:
     #             return False
-    #     square = subsquares[math.floor(row/3) + (3 * math.floor(col/3))]
+    #     square = self.subsquares[math.floor(row/3) + (3 * math.floor(col/3))]
     #     for i in range(9):
     #         if square[i] == n:
     #             return False

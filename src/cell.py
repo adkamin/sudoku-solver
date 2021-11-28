@@ -10,13 +10,17 @@ class Cell:
         """ Operator < for domain size (necessary for priority queue of cell arcs) """
         return len(self.domain) < len(other.domain)
 
+    
+    def __eq__(self, other):
+        return self is other
+
 
     def remove_from_domain(self, n):
         """ Removes the given value from the domain, and possibly assigns the last value to the cell """
-        self.domain = self.domain.remove(n)
-        # TODO should this be done here?
-        # if len(self.domain) == 1:
-        #     self.value = self.domain[0]
+        if n in self.domain:
+            self.domain.remove(n)
+        if len(self.domain) == 1:
+            self.value = self.domain[0]
     
 
     def update_neighbors(self, neighbors):
@@ -28,5 +32,6 @@ class Cell:
         """ Returns neighbors excluding the neighbor 'other' """
         orig_neighbors = self.neighbors
         if (orig_neighbors):
-            orig_neighbors.remove(other)
+            if other in orig_neighbors:
+                orig_neighbors.remove(other)
         return orig_neighbors
