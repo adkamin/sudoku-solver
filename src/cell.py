@@ -1,9 +1,10 @@
 class Cell:
-    def __init__(self, value, domain, neighbors):
+    def __init__(self, value, domain, neighbors, id):
         """ Cell initializer """
         self.value = value              # The current value (0 if no value)
         self.domain = domain            # A list of possible values for cells
         self.neighbors = neighbors      # A list of all cells that this cell is constrained by
+        self.id = id                    # Indeces for testing purposes
 
     
     def __lt__(self, other):
@@ -31,8 +32,7 @@ class Cell:
 
     def get_other_neighbors(self, other):
         """ Returns neighbors excluding the neighbor 'other' """
-        orig_neighbors = self.neighbors
-        if (orig_neighbors):
-            if other in orig_neighbors:
-                orig_neighbors.remove(other)
+        orig_neighbors = list.copy(self.neighbors)
+        if other in orig_neighbors:
+            orig_neighbors.remove(other)
         return orig_neighbors

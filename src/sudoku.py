@@ -21,7 +21,7 @@ class Sudoku:
         with open(filename) as f:
             for i in range(9):
                 for j in range(9):
-                    cell = Cell((int(f.read(1))), list(range(1,10)), [])
+                    cell = Cell((int(f.read(1))), list(range(1,10)), [], (i,j))
                     grid[i][j] = cell
                 f.read(1)
         return grid
