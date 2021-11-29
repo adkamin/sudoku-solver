@@ -10,16 +10,6 @@ def main():
     filename = "Sudoku" + nr + ".txt"
     sudoku = Sudoku(filename)
 
-    # # Testing domain
-    # print(f"Domain of (0,0): ")
-    # for val in sudoku.grid[0][0].domain:
-    #     print(val)
-
-    # # Testing neighbors
-    # print(f"Neighbors of (0,0): ")
-    # for neigh in sudoku.grid[0][0].neighbors:
-    #     print(neigh.value)
-
     steps = 0
     solver = Solver(sudoku)
     if solver.solve() and solver.is_solution():
@@ -27,7 +17,6 @@ def main():
     else:
         print("Could not solve sudoku")
         print(sudoku)
-
 
     
 if __name__ == "__main__":
