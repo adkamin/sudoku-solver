@@ -38,32 +38,19 @@ class Sudoku:
         """ Initializes domains of all cells """
         for i in range(9):
             for j in range(9):
-                # Case value is set, domain is that value
                 if self.grid[i][j].value != 0:
                     self.grid[i][j].domain = [self.grid[i][j].value]
-                # Case value is not set, generate domain based on neighbor values
-                else:
-                    orig_domain = list.copy(self.grid[i][j].domain)
-                    for val in orig_domain:
-                        for neighbor in self.grid[i][j].neighbors:
-                            if val == neighbor.value:
-                                self.grid[i][j].remove_from_domain(val)
-                                break
-                            else:
-                                continue
 
 
     def generate_neighbors(self, row, col):
         """ Returns all neighbors of a cell (which constrain it) """
         neighbors = {}
         for i in range(9):
-            if i != row:
-                neighbors[(col,i)] = self.grid[col][i]
+            neighbors[(row,i)] = self.grid[row][i]
         for j in range(9):
-            if j != col:
-                neighbors[(j,row)] = self.grid[j][row]
+            neighbors[(j,col)] = self.grid[j][col]
         self.get_square_neighbors(row, col, neighbors)
-        # print(f"nr of neighbors after subsquares: {len(list(set(neighbors)))}")
+        del neighbors[(row,col)]
         return list(neighbors.values())
 
 
@@ -73,8 +60,8 @@ class Sudoku:
         square_col = math.floor(col/3) * 3
         for i in range(square_row, square_row+3):
             for j in range(square_col, square_col+3):
-                if (i != row or j != col):
-                    neighbors[(j,i)] = self.grid[j][i]
+                if i != row and j != col:
+                    neighbors[(i,j)] = self.grid[i][j]
 
 
     def __str__(self):
@@ -117,15 +104,3 @@ class Sudoku:
                 subsquare = list(itertools.chain.from_iterable(row[j:j+3] for row in self.grid[i:i+3]))
                 subsquares.append(subsquare)
         return subsquares
-
-
-    # # Returns true if number is one of possible numbers in given cell
-    # def num_possible(self, n, row, col):
-    #     for i in range(9):
-    #         if self.grid[row][i] == n or self.grid[i][col] == n:
-    #             return False
-    #     square = self.subsquares[math.floor(row/3) + (3 * math.floor(col/3))]
-    #     for i in range(9):
-    #         if square[i] == n:
-    #             return False
-    #     return True
