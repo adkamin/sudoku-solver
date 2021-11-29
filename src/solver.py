@@ -5,6 +5,7 @@ class Solver:
         """ Solver initializer """
         self.sudoku = sudoku           # Sudoku to solve
         self.q = self.generate_arcs()  # Priority queue of arcs (pairs of cells)
+        self.steps = 0                 # Steps the solver takes to solve sudoku
 
 
     def generate_arcs(self):
@@ -21,8 +22,8 @@ class Solver:
     def solve(self):
         """ AC-3 algorithm """
         """ Returns true if constraints can be satisfied, returns false otherwise"""
-        # counter = 0
         while not self.q.empty():
+            self.steps += 1
             arc = self.q.get()
             if self.revise(arc):
                 if not arc[0].domain:
@@ -30,7 +31,7 @@ class Solver:
                 for neighbor in arc[0].get_other_neighbors(arc[1]):
                     if (neighbor, arc[0]) not in list(self.q.queue):
                         self.q.put((neighbor, arc[0]))
-            print(self.sudoku)
+            # print(self.sudoku)
         return True
  
 
@@ -51,8 +52,3 @@ class Solver:
             if value != value2:
                 return True
         return False
-
-
-    def is_solution(self):
-        """ Returns true if sudoku is solved """
-        return self.sudoku.is_solution()

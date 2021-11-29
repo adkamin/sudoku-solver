@@ -9,14 +9,15 @@ def main():
     nr = input("Specify sudoku file (1,2,3,4 or 5): ")
     filename = "Sudoku" + nr + ".txt"
     sudoku = Sudoku(filename)
+    print("Initial sudoku:")
+    print(sudoku)
 
-    steps = 0
     solver = Solver(sudoku)
-    if solver.solve() and solver.is_solution():
-        print(f"Solved sudoku in {steps} steps!")
+    if solver.solve() and sudoku.is_solution():
+        print(f"Solved sudoku in {solver.steps} steps!")
+        print(sudoku)
     else:
         print("Could not solve sudoku")
-        print(sudoku)
 
     
 if __name__ == "__main__":

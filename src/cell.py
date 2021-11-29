@@ -1,10 +1,9 @@
 class Cell:
-    def __init__(self, value, domain, neighbors, id):
+    def __init__(self, value, domain, neighbors):
         """ Cell initializer """
         self.value = value              # The current value (0 if no value)
         self.domain = domain            # A list of possible values for cells
         self.neighbors = neighbors      # A list of all cells that this cell is constrained by
-        self.id = id                    # Indeces (for testing purposes)
 
     
     def __lt__(self, other):
@@ -36,9 +35,3 @@ class Cell:
         if other in orig_neighbors:
             orig_neighbors.remove(other)
         return orig_neighbors
-
-
-    def print_neighbors(self):
-        """ For testing purposes """
-        for n in self.neighbors:
-            print(f"neighbor {n.id} with value {n.value}")

@@ -10,9 +10,6 @@ class Sudoku:
         self.grid = self.read_sudoku(filename)
         self.subsquares = []
         self.init_neighbors()
-        print("Initial sudoku:")
-        print(self)
-        self.init_domains()
     
 
     def read_sudoku(self, filename):
@@ -21,7 +18,9 @@ class Sudoku:
         with open(filename) as f:
             for i in range(9):
                 for j in range(9):
-                    cell = Cell((int(f.read(1))), list(range(1,10)), [], (i,j))
+                    val = (int(f.read(1)))
+                    domain = list(range(1,10)) if val == 0 else [val]
+                    cell = Cell(val, domain, [])
                     grid[i][j] = cell
                 f.read(1)
         return grid
@@ -89,7 +88,8 @@ class Sudoku:
         for col in columns:
             if sum(cell.value for cell in col) != 45:
                 return False
-        self.subsquares = self.generate_subsquares()
+        if not self.subsquares:
+            self.subsquares = self.generate_subsquares()
         for square in self.subsquares:
             if sum(cell.value for cell in square) != 45:
                 return False
