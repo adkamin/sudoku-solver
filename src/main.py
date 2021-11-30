@@ -15,9 +15,11 @@ def main():
     # Heuristics:
     # heuristics = 0 # no deliberate ordering
     # heuristics = 1 # order both elements inside tuple by smaller domain
-    # heuristics = 2 # order only first element
+    # heuristics = 2 # order both elements inside tuple by bigger domain
     # heuristics = 3 # first domain is smaller, second domain is bigger
-    heuristics = 4 # order both elements inside tuple by bigger domain
+    # ----------------
+    # Best heuristics:
+    heuristics = 4 # first domain is bigger, second domain is smaller
 
     solver = Solver(sudoku, heuristics)
     if solver.solve() and sudoku.is_solution():

@@ -12,6 +12,7 @@ class Arc:
 
 
     def __lt__(self, other):
+        """ Operator < for arcs (necessary for priority queue) """
         # no deliberate ordering
         if self.heuristics == 0:
             return True
@@ -23,20 +24,25 @@ class Arc:
             else:
                 return self.fst < other.fst
 
-        # order only first element
-        elif self.heuristics == 2:
-            return self.fst < self.snd
+        # order both elements inside tuple by bigger domain
+        if self.heuristics == 2:
+            if (self.fst == other.fst):
+                return self.snd > other.snd
+        else:
+            return self.fst > other.fst
 
         # first domain is smaller, second domain is bigger
-        elif self.heuristics == 3:
+        if self.heuristics == 3:
             if (self.fst == other.fst):
                 return self.snd > other.snd
             else:
                 return self.fst < other.fst
 
-        # order both elements inside tuple by bigger domain
-        elif self.heuristics == 4:
+        # first domain is smaller, second domain is bigger
+        if self.heuristics == 4:
             if (self.fst == other.fst):
-                return self.snd > other.snd
-        else:
-            return self.fst > other.fst
+                return self.snd < other.snd
+            else:
+                return self.fst > other.fst
+
+
