@@ -17,30 +17,30 @@ class Arc:
         if self.heuristics == 0:
             return True
 
-        # order both elements inside tuple by smaller domain
+        # order both elements inside by smaller domain
         if self.heuristics == 1:
-            if (self.fst == other.fst):
+            if len(self.fst.domain) == len(other.fst.domain):
                 return self.snd < other.snd
             else:
                 return self.fst < other.fst
 
-        # order both elements inside tuple by bigger domain
+        # order both elements inside by bigger domain (best)
         if self.heuristics == 2:
-            if (self.fst == other.fst):
+            if len(self.fst.domain) == len(other.fst.domain):
                 return self.snd > other.snd
         else:
             return self.fst > other.fst
 
         # first domain is smaller, second domain is bigger
         if self.heuristics == 3:
-            if (self.fst == other.fst):
+            if len(self.fst.domain) == len(other.fst.domain):
                 return self.snd > other.snd
             else:
                 return self.fst < other.fst
 
         # first domain is smaller, second domain is bigger
         if self.heuristics == 4:
-            if (self.fst == other.fst):
+            if len(self.fst.domain) == len(other.fst.domain):
                 return self.snd < other.snd
             else:
                 return self.fst > other.fst

@@ -11,6 +11,10 @@ class Cell:
     def __lt__(self, other):
         """ Operator < for domain size (necessary for priority queue of arcs) """
         return len(self.domain) < len(other.domain)
+
+    def __gt__(self, other):
+        """ Operator >= for domain size (necessary for priority queue of arcs) """
+        return len(self.domain) >= len(other.domain)
     
 
     def __eq__(self, other):
