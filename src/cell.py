@@ -1,3 +1,5 @@
+import random
+
 class Cell:
     def __init__(self, value, domain, neighbors):
         """ Cell initializer """
@@ -7,10 +9,10 @@ class Cell:
 
     
     def __lt__(self, other):
-        """ Operator < for domain size (necessary for priority queue of cell arcs) """
+        """ Operator < for domain size (necessary for priority queue of arcs) """
         return len(self.domain) < len(other.domain)
-
     
+
     def __eq__(self, other):
         """ Operator == to state that cells are equal if they are the same object """
         return self is other

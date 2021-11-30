@@ -12,12 +12,20 @@ def main():
     print("Initial sudoku:")
     print(sudoku)
 
-    solver = Solver(sudoku)
+    # Heuristics:
+    # heuristics = 0 # no deliberate ordering
+    # heuristics = 1 # order both elements inside tuple by smaller domain
+    # heuristics = 2 # order only first element
+    # heuristics = 3 # first domain is smaller, second domain is bigger
+    heuristics = 4 # order both elements inside tuple by bigger domain
+
+    solver = Solver(sudoku, heuristics)
     if solver.solve() and sudoku.is_solution():
         print(f"Solved sudoku in {solver.steps} steps!")
         print(sudoku)
     else:
         print("Could not solve sudoku")
+        print(f"Took {solver.steps} steps")
 
     
 if __name__ == "__main__":
